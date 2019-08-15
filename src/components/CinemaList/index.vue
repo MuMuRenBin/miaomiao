@@ -1,46 +1,17 @@
 <template>
     <div class='cinema_body'>
         <ul>
-            <li>
+            <li v-for="(item, index) in cinemaList" :key="index">
                 <div>
-                    <span>大地影院（澳东世纪店）</span>
-                    <span class="q"><span class="price">22.9</span></span>
+                    <span>{{item.nm}}</span>
+                    <span class="q"><span class="price">{{item.sellPrice}}</span>元起</span>
                 </div>
                 <div class="address">
-                    <span>金州区大连经济技术开发区澳东世纪三层</span>
-                    <span>1763,5km</span>
+                    <span>{{item.addr}}</span>
+                    <span>{{item.distance}}</span>
                 </div>
                 <div class="card">
-                    <div>小吃</div>
-                    <div>折扣卡</div>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span>大地影院（澳东世纪店）</span>
-                    <span class="q"><span class="price">22.9</span></span>
-                </div>
-                <div class="address">
-                    <span>金州区大连经济技术开发区澳东世纪三层</span>
-                    <span>1763,5km</span>
-                </div>
-                <div class="card">
-                    <div>小吃</div>
-                    <div>折扣卡</div>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span>大地影院（澳东世纪店）</span>
-                    <span class="q"><span class="price">22.9</span></span>
-                </div>
-                <div class="address">
-                    <span>金州区大连经济技术开发区澳东世纪三层</span>
-                    <span>1763,5km</span>
-                </div>
-                <div class="card">
-                    <div>小吃</div>
-                    <div>折扣卡</div>
+                    <div v-for="(itemCard, key) in item.tag" v-if="itemCard==true" :key="key" :class="key|classCard">{{key|formatCard}}</div>
                 </div>
             </li>
         </ul>
@@ -50,6 +21,65 @@
 <script>
 export default {
     name:'CinemaList',
+    data() {
+        return {
+            cinemaList:[],
+        }
+    },
+    methods: {
+        
+    },
+    mounted() {
+        this.axios.get('/cinemaList?cityId=42')
+        .then((result) => {
+            console.log(result)
+            if (result.data.msg==='ok') {
+                this.cinemaList= result.data.data.cinemas;
+            }
+        }).catch((err) => {
+            console.log('影院数据请求失败！')
+        });
+    },
+    filters:{
+        formatCard(key){
+            let card=[
+                {key:'allowRefund',value:'改签'},
+                {key:'buyout',value:'团购'},
+                // {key:'cityCardTag',value:''},
+                // {key:'deal',value:''},
+                {key:'endorse',value:'退票'},
+                {key:'sell',value:'可售'},
+                {key:'snack',value:'观影小吃'},
+                {key:'vipTag',value:'折扣卡'},
+            ];
+            for (let i = 0; i < card.length; i++) {
+                if (card[i].key===key) {
+                    return card[i].value
+                }
+                
+            }
+            return '';
+        },
+        classCard(key){
+            let card=[
+                {key:'allowRefund',value:'or'},
+                {key:'buyout',value:'or'},
+                // {key:'cityCardTag',value:''},
+                // {key:'deal',value:''},
+                {key:'endorse',value:'or'},
+                {key:'sell',value:'or'},
+                {key:'snack',value:'bl'},
+                {key:'vipTag',value:'bl'},
+            ];
+            for (let i = 0; i < card.length; i++) {
+                if (card[i].key===key) {
+                    return card[i].value
+                }
+                
+            }
+            return '';
+        }
+    }
 }
 </script>
 

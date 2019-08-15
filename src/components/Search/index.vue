@@ -3,28 +3,19 @@
         <div class="search_input">
             <div class="search_input_wrapper">
                 <i class="iconfont icon-sousuo"></i>
-                <input type="text">
+                <input type="text" v-model="message">
             </div>
         </div>
         <div class="search_result">
             <h3>电影/电视剧/综艺</h3>
             <ul>
-                <li>
-                    <div class="img"><img src="../../../public/images/4.jpg" alt=""></div>
+                <li v-for="(item, index) in movieList" :key="index">
+                    <div class="img"><img :src="item.img|setWH('60.88')" alt=""></div>
                     <div class="info">
-                        <p><span>3333</span><span>8.6</span></p>
-                        <p>A cool fish</p>
-                        <p>剧情，喜剧，犯罪</p>
-                        <p>2018-11-16</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="img"><img src="../../../public/images/4.jpg" alt=""></div>
-                    <div class="info">
-                        <p><span>3333</span><span>8.6</span></p>
-                        <p>A cool fish</p>
-                        <p>剧情，喜剧，犯罪</p>
-                        <p>2018-11-16</p>
+                        <p><span>{{item.nm}}</span><span>{{item.sc}}</span></p>
+                        <p>{{item.enm}}</p>
+                        <p>{{item.cat}}</p>
+                        <p>{{item.pubDesc}}</p>
                     </div>
                 </li>
             </ul>
@@ -34,7 +25,43 @@
 
 <script>
 export default {
-    
+    data() {
+        return {
+            message:'',
+            movieList:[],
+        }
+    },
+    methods: {
+        cancelRequest(){
+            if (typeof this.source==='function') {
+                this.source('终止请求')
+            }
+        }
+    },
+    watch: {
+        message(newVal){
+            let that = this;
+            this.cancelRequest()
+            this.axios.get('/searchList?cityId=42&kw='+newVal,{
+                cancelToken:new this.axios.CancelToken(function (c){
+                    that.source=c
+                })
+            })
+            .then((result) => {
+                console.log(result);
+                if (result.data.msg&&result.data.data.movies) {
+                    this.movieList = result.data.data.movies.list
+                }
+            }).catch((err) => {
+                if (this.axios.isCancel(err)) {
+                    console.log('Request canceled',err.message);//请求如果被取消，这里是返回取消的message
+                }else{
+                    //handle error
+                    console.log('搜索数据失败！'+err);
+                }
+            });            
+        }
+    },
 }
 </script>
 
@@ -52,6 +79,6 @@ export default {
     .search_body .search_result .img img {width: 100%;}
     .search_body .search_result .info {float: left;margin-left: 15px;flex: 1;}
     .search_body .search_result .info p{height: 22px;display: flex;line-height: 22px;font-size: 12px;}
-    .search_body .search_result .info p:nth-of-type(1) span:nth-of-type(1){font-size: 18px;flex: 1;}
+    .search_body .search_result .info p:nth-of-type(1) span:nth-of-type(1){font-size: 18px;flex: 1;overflow: hidden;text-overflow: ellipsis;}
     .search_body .search_result .info p:nth-of-type(1) span:nth-of-type(2){font-size: 16px;color: #f37103;}
 </style>

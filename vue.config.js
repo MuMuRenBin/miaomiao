@@ -1,9 +1,14 @@
-export default{
+module.exports={
+    // baseUrl:'/',
     devServer:{
         proxy:{
             '/api':{
-                target:'http://v.juhe.cn/movie',
+                target:'http://39.97.33.178',
                 changeOrigin:true,
+                ws:true,
+                // pathRewrite:{
+                //     '^/api':''
+                // }
             }
         }
     }

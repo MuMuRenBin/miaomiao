@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style>
-    .login_body{width: 100%;padding-top:50px;margin: 5px; }
+    .login_body{width: 95%;padding-top:50px;margin: 10px; }
     .login_body .login_text{width: 100%;height: 40px;border: none;border-bottom: 1px solid #ccc;margin-bottom: 5px;outline: none;}
     .login_body .login_btn{height: 50px;margin: 10px;}
     .login_body .login_btn input{width: 100%;height: 100%;background-color: #e54847;border-radius: 3px;border: none;display: block;color: #fff;;}

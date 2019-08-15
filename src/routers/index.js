@@ -23,6 +23,7 @@ export default new Router({
       {path:'wholecity',},
       {path:'brand',},
       {path:'feature',},
+      {path:'/cinema',redirect:''}
     ]},
     {path:'/mine',component:Mine},
   ]
