@@ -1,5 +1,6 @@
 <template>
-    <div id="content">
+    <div id="main" >
+        <Header title="喵喵影院"/>
         <div class="cinema_menu">
             <router-link tag='div' to="/cinema/wholecity" class="city_switch">
                 全城<van-icon name="arrow-down" />
@@ -12,10 +13,13 @@
             </router-link>
         </div>
         <CinemaList></CinemaList>
+        <TabBar/>
     </div>
 </template>
 
 <script>
+import Header from '@/components/Header'
+import TabBar from '@/components/TabBar'
 import CinemaList from '@/components/CinemaList';
 export default {
     name:'Cinema',
@@ -28,12 +32,11 @@ export default {
         
     },
     components:{
-        CinemaList,
+        TabBar,Header,CinemaList,
     }
 }
 </script>
 <style scoped>
-    #content{padding-top: 50px;}
     .cinema_menu{width: 100%;height: 45px;border-bottom: 1px solid #e6e6e6;display: flex;justify-content: space-around;align-items: center;background-color: #fff;}
     .cinema_menu .city_switch{height: 100%;line-height: 45px;}
     .cinema_menu .city_switch.active{color: #ef4238;border-bottom: 2px solid #ef4238;}

@@ -12,7 +12,7 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {path:'/',redirect:'/movie'},
-    {path:'/movie',component:Movie,children:[
+    {path:'/movie',component:()=>import('@/views/Movie'),children:[
       {path:'/movie',redirect:'/movie/nowplaying'},
       {path:'city',component:()=>import('@/components/City')},
       {path:'nowplaying',component:()=>import('@/components/NowPlaying')},
@@ -25,6 +25,6 @@ export default new Router({
       {path:'feature',},
       {path:'/cinema',redirect:''}
     ]},
-    {path:'/mine',component:Mine},
+    {path:'/mine',component:()=>import('@/views/Mine')},
   ]
 })
