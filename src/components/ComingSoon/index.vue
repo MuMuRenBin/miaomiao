@@ -4,9 +4,9 @@
             <Loading v-if="isLoading"/>
             <ul>
                 <li v-for="(item, index) in comingList" :key="index">
-                    <div class="pic_show"><img :src="item.img|setWH('64.90')" alt="" srcset=""></div>
-                    <div class="info_list">
-                        <h2>{{item.nm}}<img v-if="item.version" src="@/assets/imax.png" alt=""/></h2>
+                    <div class="pic_show" @touchstart='handleToDetail(item.id)'><img :src="item.img|setWH('64.90')" alt="" srcset=""></div>
+                    <div class="info_list"  @touchstart='handleToDetail(item.id)'>
+                        <h2 >{{item.nm}}<img v-if="item.version" src="@/assets/imax.png" alt=""/></h2>
                         <p><span class="person">{{item.wish}}</span>人想看</p>
                         <p>主演：{{item.star}}</p>
                         <p>{{item.rt}}上映</p>
@@ -29,7 +29,10 @@ export default {
         }
     },
     methods: {
-        
+        handleToDetail(movieId){
+            // console.log(movieId)
+            this.$router.push('/movie/detail/2/'+movieId)
+        },
     },
     activated() {
         let cityId = this.$store.state.city.id;

@@ -5,8 +5,8 @@
                 <!--:handleToScroll='handleToScroll' :handleToTouchEnd='handleToTouchEnd'-->
                 <ul v-else>
                     <li v-for="(item, index) in movieList" :key="index">
-                        <div class="pic_show" @tap='handleToDetail'><img :src="item.img|setWH('64.90')" alt="" srcset=""></div>
-                        <div class="info_list">
+                        <div class="pic_show" @touchstart='handleToDetail(item.id)'><img :src="item.img|setWH('64.90')" alt="" srcset=""></div>
+                        <div class="info_list" @touchstart='handleToDetail(item.id)'>
                             <h2>{{item.nm}}<img v-if="item.version" src="@/assets/imax.png" alt=""/></h2>
                             <p>观众评<span class="grade">{{item.sc}}</span></p>
                             <p>主演：{{item.star}}</p>
@@ -31,8 +31,9 @@ export default {
         }
     },
     methods: {
-        handleToDetail(){
-            console.log('handleToDetail')
+        handleToDetail(movieId){
+            // console.log(movieId)
+            this.$router.push('/movie/detail/1/'+movieId)
         },
         // handleToScroll(pos){
         //     if (pos.y>30) {
