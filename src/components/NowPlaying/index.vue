@@ -5,8 +5,8 @@
                 <!--:handleToScroll='handleToScroll' :handleToTouchEnd='handleToTouchEnd'-->
                 <ul v-else>
                     <li v-for="(item, index) in movieList" :key="index">
-                        <div class="pic_show" @touchstart='handleToDetail(item.id)'><img :src="item.img|setWH('64.90')" alt="" srcset=""></div>
-                        <div class="info_list" @touchstart='handleToDetail(item.id)'>
+                        <div class="pic_show" @click='handleToDetail(item.id)'><img :src="item.img|setWH('64.90')" alt="" srcset=""></div>
+                        <div class="info_list" @click='handleToDetail(item.id)'>
                             <h2>{{item.nm}}<img v-if="item.version" src="@/assets/imax.png" alt=""/></h2>
                             <p>观众评<span class="grade">{{item.sc}}</span></p>
                             <p>主演：{{item.star}}</p>
@@ -62,7 +62,7 @@ export default {
         console.log(cityId);
         if (this.prevCityId===cityId) {return;}
         this.isLoading = true;
-        this.axios.get('/movieOnInfoList?Id='+cityId)
+        this.axios.get('/api/movieOnInfoList?Id='+cityId)
         .then((result) => {
             console.log(result)
             let msg = result.data.msg;

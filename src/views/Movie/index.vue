@@ -43,11 +43,13 @@ export default {
     },
     mounted() {
         setTimeout(()=>{
-            this.axios.get('/getLocation')
+            this.axios.get('/api/getLocation')
             .then(res => {
                  if (res.data.msg==='ok') {
                      var nm = res.data.data.nm;
                      var id = res.data.data.id;
+                    //  console.log(nm,id);
+                    //  console.log(this.$store.state.city.id==id);
                      if (this.$store.state.city.id==id) {return;}
                      messageBox({
                          title:'定位',
@@ -55,6 +57,7 @@ export default {
                          cancel:'取消',
                          ok:'切换定位',
                          handleOk(){
+                             console.log('定位触发')
                              window.localStorage.setItem('nowNm',nm);
                              window.localStorage.setItem('nowId',id);
                              window.location.reload();
@@ -62,13 +65,13 @@ export default {
                      })
                  }
             })
-        },3000)
+        },2000)
     },
 }
 </script>
 
 <style scoped>
-    #content .movie_menu {width: 100%;height: 45px;border-bottom: 1px solid #e6e6e6;display: flex;justify-content: space-between;margin-bottom: 1px;position: fixed;top: 50px;}
+    #content .movie_menu {width: 100%;height: 45px;border-bottom: 1px solid #e6e6e6;display: flex;justify-content: space-between;margin-bottom: 1px;position: fixed;top: 50px;z-index: 3;}
     .movie_menu .city_name{margin-left: 20px;height: 100%;line-height: 45px;}
     .movie_menu .city_name.active{color: #ef4238;border-bottom: 2px solid #ef4238;}
     .movie_menu .city_name.router-link-active{color: #ef4238;border-bottom: 2px solid #ef4238;}

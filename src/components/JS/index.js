@@ -29,11 +29,11 @@ export var messageBox = (function(){
             },
             methods: {
                 handleCancel(){
-                    defaults.handleCancel&&defaults.handleCancel.bind(this);
+                    defaults.handleCancel&&defaults.handleCancel.call(this);
                     document.body.removeChild(vm.$el);
                 },
                 handleOk(){
-                    defaults.handleOk&&defaults.handleOk.bind(this);
+                    defaults.handleOk&&defaults.handleOk.call(this);
                     document.body.removeChild(vm.$el);
                 }
             },

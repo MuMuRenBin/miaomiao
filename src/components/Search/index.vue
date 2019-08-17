@@ -43,7 +43,7 @@ export default {
             let that = this;
             let cityId = this.$store.state.city.id;
             this.cancelRequest()
-            this.axios.get('/searchList?cityId='+cityId+'&kw='+newVal,{
+            this.axios.get('/api/searchList?cityId='+cityId+'&kw='+newVal,{
                 cancelToken:new this.axios.CancelToken(function (c){
                     that.source=c
                 })

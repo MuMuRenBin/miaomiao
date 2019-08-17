@@ -6,7 +6,7 @@
         <Loading v-if="isLoading"/>
         <div v-else id="content" class="contentDetail">
             <div class="detail_list">
-                <div class="detail_list_bg"></div>
+                <div class="detail_list_bg" :style='{"background-image":"url("+detailMovie.img.replace(/w\.h/,("375.200"))+")"}'></div>
                 <div class="detail_list_filter"></div>
                 <div class="detail_list_content">
                     <div class="detail_list_img">
@@ -58,7 +58,7 @@ export default {
         }
     },
     mounted(){
-        this.axios.get('/detailmovie?movieId='+this.movieId)
+        this.axios.get('/api/detailmovie?movieId='+this.movieId)
         .then((res) => {
             if (res.data.msg==='ok') {
                 this.detailMovie = res.data.data.detailMovie;
@@ -78,14 +78,15 @@ export default {
 
 <style scoped>
     #detailContainer{position: absolute;left: 0;top: 0;z-index: 100;width: 100%;min-height: 100%;background-color: #fff;}
-    #detailContainer.slide-enter-active{animation: 3s slideMove;}
+    #detailContainer.slide-enter-active{animation: .3s slideMove;}
     @keyframes slideMove {
         0%{transform: translateX(100%);}
         100%{transform: translateX(0);}
     }
-    #content.contentDetail{display: block;margin-bottom: 0;}
+    header{position: fixed;z-index: 3;}
+    #content.contentDetail{display: block;margin-bottom: 0;margin-top: 50px;}
     #content .detail_list{height: 200px;width: 100%;position: relative;overflow: hidden;}
-    .detail_list .detail_list_bg{width: 100%;height: 100%;background:url(../../assets/logo.png) 0 40%;filter: blur(20px);background-color: red;}
+    .detail_list .detail_list_bg{width: 100%;height: 100%;background: 0 40%;filter: blur(20px);background-color: red;}
     .detail_list .detail_list_filter{width: 100%;height: 100%;position: absolute;background-color: #40454d;opacity: .55;position: absolute;}
     .detail_list .detail_list_content{display: flex;width: 100%;height: 100%;position: absolute;left: 0;top: 0;z-index: 2;}
     .detail_list .detail_list_img{width: 108px;height: 150px;border: 1px solid #f0f2f3;margin: 20px;}

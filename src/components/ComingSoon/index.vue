@@ -4,8 +4,8 @@
             <Loading v-if="isLoading"/>
             <ul>
                 <li v-for="(item, index) in comingList" :key="index">
-                    <div class="pic_show" @touchstart='handleToDetail(item.id)'><img :src="item.img|setWH('64.90')" alt="" srcset=""></div>
-                    <div class="info_list"  @touchstart='handleToDetail(item.id)'>
+                    <div class="pic_show" @click='handleToDetail(item.id)'><img :src="item.img|setWH('64.90')" alt="" srcset=""></div>
+                    <div class="info_list"  @click='handleToDetail(item.id)'>
                         <h2 >{{item.nm}}<img v-if="item.version" src="@/assets/imax.png" alt=""/></h2>
                         <p><span class="person">{{item.wish}}</span>人想看</p>
                         <p>主演：{{item.star}}</p>
@@ -38,7 +38,7 @@ export default {
         let cityId = this.$store.state.city.id;
         if (this.prevCityId===cityId) {return;}
         this.isLoading = true;
-        this.axios.get('movieComingList?cityId='+cityId)
+        this.axios.get('/api/movieComingList?cityId='+cityId)
         .then((result) => {
             console.log(result);
             if (result.data.msg==='ok') {

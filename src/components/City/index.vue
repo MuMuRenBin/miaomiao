@@ -20,7 +20,7 @@
         </div>
         <div class="city_index">
             <ul>
-                <li v-for="(item, index) in cityList" :key="index" @touchstart="handleToIndex(index)">{{item.index}}</li>
+                <li v-for="(item, index) in cityList" :key="index" @click="handleToIndex(index)">{{item.index}}</li>
             </ul>
         </div>
     </div>
@@ -106,7 +106,7 @@ export default {
             this.hotList = JSON.parse(hotList);
 
         }else{
-            this.axios.get('/cityList').then((result) => {
+            this.axios.get('/api/cityList').then((result) => {
                 console.log(result);
                 let cities=result.data.data.cities;
                 // console.log(cities)

@@ -4,7 +4,7 @@ import router from './routers'
 import store from './stores'
 import axios from 'axios'
 Vue.prototype.axios=axios;
-axios.defaults.baseURL = '/api/'
+// axios.defaults.baseURL = '/api/'
 
 import { Tabbar, TabbarItem,Tab, Tabs,Icon } from 'vant';
 import 'vant/lib/index.css';
