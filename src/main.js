@@ -9,10 +9,14 @@ Vue.prototype.axios=axios;
 import { Tabbar, TabbarItem,Tab, Tabs,Icon } from 'vant';
 import 'vant/lib/index.css';
 import './assets/iconfont/iconfont.css'
-
 Vue.use(Tabbar).use(TabbarItem);
 Vue.use(Tab).use(Tabs);
 Vue.use(Icon);
+
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
+
 
 Vue.filter('setWH',(url,arg)=>{
   return url.replace(/w\.h/,arg)

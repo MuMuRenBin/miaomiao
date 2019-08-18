@@ -1,7 +1,7 @@
 <template>
     <div class="register_body">
         <div class="register_email">
-            邮箱：<input v-model="email" class="register_text" type="text"><button @touchstart='handleToVerify'>发送验证码</button>
+            邮箱：<input v-model="email" class="register_text" type="text"><button @touchstart='handleToVerify' :disabled='disabled'>{{verifyInfo}}</button>
         </div>
         <div>
             用户名：<input v-model="username" class="register_text" type="text">
@@ -33,30 +33,37 @@ export default {
             username:'',
             password:'',
             verify:'',
+            verifyInfo:'发送验证码',
+            disabled:false,
         }
     },
     methods: {
         handleToVerify(){
+            if (this.disabled) {return;}
             this.axios.get('/api2/users/verify?email='+this.email)
             .then((res) => {
                 var status=res.data.status;
-                // console.log(status)
+                var that = this;
+                // console.log(that)
                 if(status===0){
                     messageBox({
                         title:'验证码',
                         content:'验证码已发送',
-                        ok:'确定'
+                        ok:'确定',
+                        handleOk(){
+                            that.countDown();
+                        }
                     })
                 }else{
                     messageBox({
                         title:'验证码',
                         content:'验证码发送失败',
-                        ok:'确定'
+                        ok:'确定',
                     })
                 }
             }).catch((err) => {
                 
-            });
+                });
         },
         handleToRegister(){
             console.log(9998888);
@@ -67,21 +74,40 @@ export default {
                 verify:this.verify
             }).then((res)=>{
                 var status= res.data.status;
+                var that = this;
                 console.log(status)
                 if(status===0){
                     messageBox({
                         title:'注册',
                         content:'用户注册成功',
-                        ok:'确定'
+                        ok:'确定',
+                        handleOk(){
+                            that.$router.push('/mine/login')
+                        }
                     })
                 }else{
                     messageBox({
                         title:'注册',
-                        content:res.data.msg+'请重新注册',
+                        content:res.data.msg+',请重新注册',
                         ok:'确定'
                     })
                 }
             })
+        },
+        countDown(){
+            this.disabled = true;
+            var count = 60;
+            var timer = setInterval(()=>{
+                count--;
+                this.verifyInfo='剩余'+count+'秒';
+                if (count===0) {
+                    this.disabled = false;
+                    count=60;
+                    this.verifyInfo = '发送验证码';
+                    clearInterval(timer)
+                }
+            },1000)
+            console.log(timer)
         }
     },
 }
