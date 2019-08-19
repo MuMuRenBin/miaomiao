@@ -5,7 +5,7 @@
         <div v-if="$store.state.user.isAdmin">用户身份：管理员<a href="/admin" target="_blank">进入管理后台</a></div>
         <div v-else>用户身份：普通用户</div>
         <div>
-            <input type="file" name="file" value="上传头像"@change='handleToUpload'>
+            <input type="file" name="file" value="上传头像" @change='handleToUpload'>
             <img class="userHead" :src="$store.state.user.userHead" alt="">
         </div>
     </div>
@@ -13,7 +13,7 @@
 
 <script>
 import axios from 'axios'
-import messageBox from '@/components/JS'
+import {messageBox} from '@/components/JS'
 export default {
     name:'Center',
     methods: {
@@ -30,24 +30,32 @@ export default {
             })
         },
         handleToUpload(e){
-            var file = e.target.file[0];
-            var param =  new Format();
+            // console.log(e);
+            var file = e.target.files[0];
+            var param =  new FormData();
             param.append('file',file,file.name);
+            console.log(param)
+            param.forEach(function(file){
+                console.log(file)
+            })
             var config={
                 headers:{
                     'Content-Type':'multipart/form-data'
                 }
-            }
-            this.axios.post('/api2/users/uploadUserHead',param,config)
-            .then((res)=>{
+            };
+            this.axios.post('/api2/users/uploadUserHead',param,config).then((res)=>{
                 var status = res.data.status;
+                console.log(status);
+                var that = this;
                 if(status===0){
                     messageBox({
                         title:'信息',
                         content:'上传头像成功',
                         ok:'确定',
                         handleOk(){
-                            this.$store.commit('user/USER_NAME',{
+                            that.$store.commit('user/USER_NAME',{
+                                name:that.$store.state.username,
+                                isAdmin:that.$store.state.isAdmin,
                                 userHead:res.data.data.userHead,
                             });
                         }
@@ -57,19 +65,16 @@ export default {
                         title:'信息',
                         content:'上传头像失败',
                         ok:'确定',
-                        handleOk(){
-                            
-                        }
                     })
                 }
-            })
+            }).catch((err)=>{console.log(err)})
         }
     },
 
     beforeRouteEnter (to, from, next) {
         axios.get('/api2/users/getUser')
         .then((res)=>{
-            console.log(99999999999999)
+            // console.log(99999999999999)
             var status = res.data.status;
             if(status===0){
                 next(vm=>{
